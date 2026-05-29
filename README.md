@@ -5,7 +5,8 @@ This repository documents the architecture, implementation, and auditing of a hy
 
 ## Infrastructure Architecture
 * **Physical Environment:** Shared Apartment Network (Wi-Fi 6)
-* **Network Isolation Control:** To mitigate risks associated with a shared infrastructure environment, a high-throughput GL-MT3000 (Beryl AX) Wi-Fi 6 router is deployed in Repeater Mode to establish an isolated, firewalled private LAN (`192.168.8.0/24`).
+* **Network Isolation Control:** To bypass upstream client isolation, MAC filtering, and DHCP constraints on the shared apartment infrastructure, the GL-MT3000 (Beryl AX) uses Layer 2 MAC cloning alongside a hardcoded Static Layer 3 configuration mapped to an authenticated endpoint profile (`192.168.0.148/24` with Gateway `192.168.0.1`). The local broadcast SSID is intentionally obfuscated as `MAKOTO_NET` / `MAKOTO_NET_5G` to prevent external profiling of the research environment. This establishes an isolated, private network address translation (NAT) perimeter routing traffic internally through the `192.168.8.0/24` subnet.
+
 
 ### Asset Register
 

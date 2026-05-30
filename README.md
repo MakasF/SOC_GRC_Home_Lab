@@ -6,6 +6,7 @@ This repository documents the architecture, implementation, and auditing of a hy
 ## Infrastructure Architecture
 * **Physical Environment:** Shared Apartment Network (Wi-Fi 6)
 * **Network Isolation Control:** To bypass upstream client isolation, MAC filtering, and DHCP constraints on the shared apartment infrastructure, the GL-MT3000 (Beryl AX) uses Layer 2 MAC cloning alongside a hardcoded Static Layer 3 configuration mapped to an authenticated endpoint profile (`192.168.0.148/24` with Gateway `192.168.0.1`). The local broadcast SSID is intentionally obfuscated as `MAKOTO_NET` / `MAKOTO_NET_5G` to prevent external profiling of the research environment. This establishes an isolated, private network address translation (NAT) perimeter routing traffic internally through the `192.168.8.0/24` subnet.
+* **Compensating Management Controls:** Due to operating system constraints on the target server baseline (Windows Home Edition incoming RDP restriction), administrative access pathways were re-engineered utilizing an encrypted Tailscale SSH overlay architecture alongside RustDesk unattended secure tunnels to maintain headless environmental control.
 
 
 ### Asset Register
@@ -24,6 +25,9 @@ This repository documents the architecture, implementation, and auditing of a hy
 * **SIEM:** Splunk Enterprise / Wazuh for centralized log management and analytics.
 * **Telemetry:** Microsoft Sysmon and Windows Event Forwarding.
 * **Attack Simulation:** Invoke-AtomicRedTeam for generating forensic artifacts.
+* **Host Hardening Baseline:** Deployed a headless Windows 11 enterprise environment on ASSET-02 utilizing localized, non-Microsoft account profiles, disabled telemetry/diagnostic pipelines, and forced Network Level Authentication (NLA) over encrypted Remote Desktop (RDP) pathways.
+* **Network Threat Intelligence:** Deployed AdGuard Home at the network perimeter (GL-MT3000) to enforce DNS-layer firewalls, utilizing URLHaus and automated blocklists to intercept malicious egress traffic and log environmental anomalies.
+
 
 ### IT GRC (Process & Governance)
 * **Audit Framework:** ASD Essential Eight Maturity Model.
